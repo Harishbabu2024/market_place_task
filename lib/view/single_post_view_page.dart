@@ -48,7 +48,6 @@ class SinglePostViewPage extends StatelessWidget {
                     padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        /// Avatar
                         ClipOval(
                           child: Image.asset(
                             "assets/avathar.png",
@@ -58,8 +57,6 @@ class SinglePostViewPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 12),
-
-                        /// Name, designation, company
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,8 +67,8 @@ class SinglePostViewPage extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      const Text(
-                                        "Angel Rosser",
+                                       Text(
+                                        model.singlePostModel?.webMarketplaceRequests?.userDetails?.name ?? "Unknown",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
@@ -91,7 +88,7 @@ class SinglePostViewPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  const Text(
+                                   Text(
                                     "2 days",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -101,8 +98,8 @@ class SinglePostViewPage extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 4),
-                              const Text(
-                                "Senior Sales Manager",
+                               Text(
+                                model.singlePostModel?.webMarketplaceRequests?.userDetails?.designation ?? "Senior Sales Manager",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -113,7 +110,7 @@ class SinglePostViewPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Row(
-                                children: const [
+                                children:  [
                                   Icon(
                                     Icons.business,
                                     size: 14,
@@ -121,7 +118,7 @@ class SinglePostViewPage extends StatelessWidget {
                                   ),
                                   SizedBox(width: 4),
                                   Text(
-                                    "Meesho",
+                                    model.singlePostModel?.webMarketplaceRequests?.userDetails?.company ?? "Meesho",
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF7E7E7E),
@@ -151,10 +148,10 @@ class SinglePostViewPage extends StatelessWidget {
                               color: Colors.grey,
                             ),
                             const SizedBox(width: 4),
-                            const Expanded(
+                             Expanded(
                               child: TextWidget(
                                 text:
-                                    "Sales Manager at Meesho privated limited",
+                                 model.singlePostModel?.webMarketplaceRequests?.serviceType ??   "Sales Manager at Meesho privated limited",
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xFF1F1F1F),
@@ -183,8 +180,8 @@ class SinglePostViewPage extends StatelessWidget {
                         ),
 
                         const SizedBox(height: 16),
-                        _buildDetailText("Budget", "₹0"),
-                        _buildDetailText("Brand", ""),
+                        _buildDetailText("Budget", model.singlePostModel?.webMarketplaceRequests?.requestDetails?.budget ?? "₹1,45,000"),
+                        _buildDetailText("Brand", model.singlePostModel?.webMarketplaceRequests?.requestDetails?.brand ?? "Unknown"),
                         _buildDetailText("Location", "Goa & Kerala"),
                         _buildDetailText(
                           "Type",
@@ -193,7 +190,7 @@ class SinglePostViewPage extends StatelessWidget {
                         _buildDetailText("Language", "English and Hindi"),
                         _buildDetailText(
                           "Description",
-                          "Looking for a travel influencer who can showcase our premium luggage line in scenic beach and nature destinations. Content should emphasize ease of travel and durability of the product.",
+                       model.singlePostModel?.webMarketplaceRequests?.description ?? "Looking for a travel influencer who can showcase our premium luggage line in scenic beach and nature destinations. Content should emphasize ease of travel and durability of the product.",
                         ),
 
                         const SizedBox(height: 16),
