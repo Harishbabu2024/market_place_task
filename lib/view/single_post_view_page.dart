@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:market_place_task/base/base_view.dart';
 import 'package:market_place_task/viewModel/list_view_model.dart';
 import 'package:market_place_task/widget/text_widget.dart';
