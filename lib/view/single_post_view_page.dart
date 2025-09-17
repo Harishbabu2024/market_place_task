@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:market_place_task/base/base_view.dart';
+import 'package:market_place_task/utils/app_utils.dart';
 import 'package:market_place_task/viewModel/list_view_model.dart';
+import 'package:market_place_task/widget/network_imafe_widget.dart';
 import 'package:market_place_task/widget/text_widget.dart';
 
 class SinglePostViewPage extends StatelessWidget {
@@ -12,7 +14,7 @@ class SinglePostViewPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Marketplace", style: TextStyle(color: Colors.white)),
+        title: const TextWidget(text: "Marketplace", color: Colors.white),
         flexibleSpace: Container(
           decoration: const BoxDecoration(color: Colors.white),
         ),
@@ -39,244 +41,402 @@ class SinglePostViewPage extends StatelessWidget {
           await data.fetchSinglePost(context, id);
         },
         builder:
-            (context, model, child) => SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    color: const Color(0xFFF5F6FB),
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            "assets/avathar.png",
-                            height: 48,
-                            width: 48,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
+            (context, model, child) =>
+                model.isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            color: const Color(0xFFF5F6FB),
+                            padding: const EdgeInsets.all(12),
+                            child: Row(
+                              children: [
+                                ClipOval(
+                                  child: NetworkImageWidget(
+                                    url:
+                                        model
+                                            .singlePostModel
+                                            ?.webMarketplaceRequests
+                                            ?.userDetails
+                                            ?.profileImage,
+                                    height: 48,
+                                    width: 48,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                       Text(
-                                        model.singlePostModel?.webMarketplaceRequests?.userDetails?.name ?? "Unknown",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF1F1F1F),
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              TextWidget(
+                                                text:
+                                                    model
+                                                        .singlePostModel
+                                                        ?.webMarketplaceRequests
+                                                        ?.userDetails
+                                                        ?.name ??
+                                                    "Unknown",
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFF1F1F1F),
+                                              ),
+
+                                              const SizedBox(width: 4),
+                                              Image.asset(
+                                                "assets/linkedin_ico.png",
+                                                height: 14,
+                                              ),
+                                              const SizedBox(width: 4),
+                                              const Icon(
+                                                Icons.verified,
+                                                size: 14,
+                                                color: Colors.teal,
+                                              ),
+                                            ],
+                                          ),
+                                          TextWidget(
+                                            text: "2 days",
+
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(width: 4),
-                                      Image.asset(
-                                        "assets/linkedin_ico.png",
-                                        height: 14,
+                                      const SizedBox(height: 4),
+                                      TextWidget(
+                                        text:
+                                            model
+                                                .singlePostModel
+                                                ?.webMarketplaceRequests
+                                                ?.userDetails
+                                                ?.designation ??
+                                            "Senior Sales Manager",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF7E7E7E),
+
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      const SizedBox(width: 4),
-                                      const Icon(
-                                        Icons.verified,
-                                        size: 14,
-                                        color: Colors.teal,
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.business,
+                                            size: 14,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(width: 4),
+                                          TextWidget(
+                                            text:
+                                                model
+                                                    .singlePostModel
+                                                    ?.webMarketplaceRequests
+                                                    ?.userDetails
+                                                    ?.company ??
+                                                "Meesho",
+                                            fontSize: 12,
+                                            color: Color(0xFF7E7E7E),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                   Text(
-                                    "2 days",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                               Text(
-                                model.singlePostModel?.webMarketplaceRequests?.userDetails?.designation ?? "Senior Sales Manager",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF7E7E7E),
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children:  [
-                                  Icon(
-                                    Icons.business,
-                                    size: 14,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    model.singlePostModel?.webMarketplaceRequests?.userDetails?.company ?? "Meesho",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF7E7E7E),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const TextWidget(text: "Looking For"),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.access_time,
-                              size: 16,
-                              color: Colors.grey,
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const TextWidget(text: "Looking For"),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/influ_ico.png",
+                                      height: 15,
+                                      width: 15,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: TextWidget(
+                                        text:
+                                            model
+                                                .singlePostModel
+                                                ?.webMarketplaceRequests
+                                                ?.serviceType ??
+                                            "Sales Manager at Meesho privated limited",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF1F1F1F),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const Divider(height: 32),
+                                const TextWidget(text: "Highlights"),
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    _buildInfoChip(
+                                      url: "assets/rupee_ico.png",
+                                      text: '10k - 100k',
+                                      color: Color(0xFFF5F6FB),
+                                    ),
+                                    SizedBox(width: 12),
+                                    _buildInfoChip(
+                                      url: "assets/brand_ico.png",
+                                      text:
+                                          'Brand: ${model.singlePostModel?.webMarketplaceRequests?.requestDetails?.brand ?? "Lifestyle, Fashion"}',
+                                      color: Color(0xFFF5F6FB),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 16),
+                                _buildDetailText(
+                                  "Budget",
+                                  model
+                                          .singlePostModel
+                                          ?.webMarketplaceRequests
+                                          ?.requestDetails
+                                          ?.budget ??
+                                      "₹1,45,000",
+                                ),
+                                _buildDetailText(
+                                  "Brand",
+                                  model
+                                          .singlePostModel
+                                          ?.webMarketplaceRequests
+                                          ?.requestDetails
+                                          ?.brand ??
+                                      "Unknown",
+                                ),
+                                _buildDetailText("Location", "Goa & Kerala"),
+                                _buildDetailText(
+                                  "Type",
+                                  "Lifestyle & Adventure travel content with a focus on young, urban audiences",
+                                ),
+                                _buildDetailText(
+                                  "Language",
+                                  "English and Hindi",
+                                ),
+                                _buildDetailText(
+                                  "Description",
+                                  model
+                                          .singlePostModel
+                                          ?.webMarketplaceRequests
+                                          ?.description ??
+                                      "Looking for a travel influencer who can showcase our premium luggage line in scenic beach and nature destinations. Content should emphasize ease of travel and durability of the product.",
+                                ),
+
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _buildShare(
+                                        "assets/whats_app_ico.png",
+                                        "Whatsapp",
+
+                                        const Color(
+                                          0xFF25D366,
+                                        ).withOpacity(0.18),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Expanded(
+                                      child: _buildShare(
+                                        "assets/linkedin_ico.png",
+                                        "Linkedin",
+                                        Color(0xFF0077B5).withOpacity(0.18),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 24),
+                                const TextWidget(
+                                  text: "Key Highlighted Details",
+
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFFAAAAAA),
+                                ),
+                                const SizedBox(height: 16),
+                                Table(
+                                  columnWidths: const {
+                                    0: FlexColumnWidth(1),
+                                    1: FlexColumnWidth(1),
+                                  },
+                                  children: [
+                                    TableRow(
+                                      children: [
+                                        DetailTile(
+                                          title: "Category",
+                                          value:
+                                              (model
+                                                          .singlePostModel
+                                                          ?.webMarketplaceRequests
+                                                          ?.requestDetails
+                                                          ?.categories
+                                                          ?.isNotEmpty ??
+                                                      false)
+                                                  ? model
+                                                      .singlePostModel!
+                                                      .webMarketplaceRequests!
+                                                      .requestDetails!
+                                                      .categories!
+                                                      .join(", ")
+                                                  : "Lifestyle, Fashion",
+                                        ),
+                                        DetailTile(
+                                          title: "Platform",
+                                          value:
+                                              (model
+                                                          .singlePostModel
+                                                          ?.webMarketplaceRequests
+                                                          ?.requestDetails
+                                                          ?.platform
+                                                          ?.isNotEmpty ??
+                                                      false)
+                                                  ? model
+                                                      .singlePostModel!
+                                                      .webMarketplaceRequests!
+                                                      .requestDetails!
+                                                      .platform!
+                                                      .join(", ")
+                                                  : "Instagram, Youtube",
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        DetailTile(
+                                          title: "Language",
+                                          value:
+                                              (model
+                                                          .singlePostModel
+                                                          ?.webMarketplaceRequests
+                                                          ?.requestDetails
+                                                          ?.languages
+                                                          ?.isNotEmpty ??
+                                                      false)
+                                                  ? model
+                                                      .singlePostModel!
+                                                      .webMarketplaceRequests!
+                                                      .requestDetails!
+                                                      .languages!
+                                                      .join(", ")
+                                                  : "Hindi, Kannada, Malayalam, Tamil & Telugu",
+                                        ),
+                                        DetailTile(
+                                          title: "Location",
+                                          value:
+                                              "Bangalore, Tamilnadu, Kerala & Goa/Bengaluru",
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        DetailTile(
+                                          title: "Required count",
+                                          value: "15 - 20",
+                                        ),
+                                        DetailTile(
+                                          title: "Our Budget",
+                                          value: "₹1,45,000",
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        DetailTile(
+                                          title: "Brand collab with",
+                                          value: "Swiggy",
+                                        ),
+
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            TextWidget(
+                                              text: "Required followers",
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color(0xFF1F1F1F),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  "assets/insta_ico.png",
+                                                  height: 12,
+                                                  width: 12,
+                                                  color: Color(0xFFAAAAAA),
+                                                ),
+                                                SizedBox(width: 2),
+                                                TextWidget(
+                                                  text: "500k - 1M",
+
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFFAAAAAA),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 2),
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  "assets/youtube_ico.png",
+                                                  height: 12,
+                                                  width: 12,
+                                                ),
+                                                SizedBox(width: 2),
+                                                TextWidget(
+                                                  text: "500k - 1M",
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFFAAAAAA),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        // DetailTile(
+                                        //   title: "Required followers",
+                                        //   value: " 500k - 1M+\n 500k - 1M+",
+                                        // ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 4),
-                             Expanded(
-                              child: TextWidget(
-                                text:
-                                 model.singlePostModel?.webMarketplaceRequests?.serviceType ??   "Sales Manager at Meesho privated limited",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1F1F1F),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const Divider(height: 32),
-                        const TextWidget(text: "Highlights"),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            _buildInfoChip(
-                              icon: Icons.people_outline,
-                              text: '10k - 100k',
-                              color: Color(0xFFF5F6FB),
-                            ),
-                            SizedBox(width: 12),
-                            _buildInfoChip(
-                              icon: Icons.category_outlined,
-                              text: 'Lifestyle, Fashion',
-                              color: Color(0xFFF5F6FB),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 16),
-                        _buildDetailText("Budget", model.singlePostModel?.webMarketplaceRequests?.requestDetails?.budget ?? "₹1,45,000"),
-                        _buildDetailText("Brand", model.singlePostModel?.webMarketplaceRequests?.requestDetails?.brand ?? "Unknown"),
-                        _buildDetailText("Location", "Goa & Kerala"),
-                        _buildDetailText(
-                          "Type",
-                          "Lifestyle & Adventure travel content with a focus on young, urban audiences",
-                        ),
-                        _buildDetailText("Language", "English and Hindi"),
-                        _buildDetailText(
-                          "Description",
-                       model.singlePostModel?.webMarketplaceRequests?.description ?? "Looking for a travel influencer who can showcase our premium luggage line in scenic beach and nature destinations. Content should emphasize ease of travel and durability of the product.",
-                        ),
-
-                        const SizedBox(height: 16),
-                        _buildShareButtons(),
-
-                        const SizedBox(height: 24),
-                        const Text(
-                          "Key Highlighted Details",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFFAAAAAA),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Table(
-                          columnWidths: const {
-                            0: FlexColumnWidth(1),
-                            1: FlexColumnWidth(1),
-                          },
-                          children: const [
-                            TableRow(
-                              children: [
-                                DetailTile(
-                                  title: "Category",
-                                  value: "Lifestyle, Fashion",
-                                ),
-                                DetailTile(
-                                  title: "Platform",
-                                  value: "Instagram, Youtube",
-                                ),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                DetailTile(
-                                  title: "Language",
-                                  value:
-                                      "Hindi, Kannada, Malayalam, Tamil & Telugu",
-                                ),
-                                DetailTile(
-                                  title: "Location",
-                                  value:
-                                      "Bangalore, Tamilnadu, Kerala & Goa/Bengaluru",
-                                ),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                DetailTile(
-                                  title: "Required count",
-                                  value: "15 - 20",
-                                ),
-                                DetailTile(
-                                  title: "Our Budget",
-                                  value: "₹1,45,000",
-                                ),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                DetailTile(
-                                  title: "Brand collab with",
-                                  value: "Swiggy",
-                                ),
-                                DetailTile(
-                                  title: "Required followers",
-                                  value: "⬜ 500k - 1M+\n⬜ 500k - 1M+",
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
       ),
-      bottomNavigationBar: _buildBottomBar(),
+      bottomNavigationBar: _buildBottomBar(context),
     );
   }
 
   Widget _buildInfoChip({
-    required IconData icon,
+    required String url,
     required String text,
     required Color color,
   }) {
@@ -289,7 +449,8 @@ class SinglePostViewPage extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: Colors.grey[700]),
+          // Icon(icon, size: 14, color: Colors.grey[700]),
+          Image.asset(url, height: 15, width: 15),
           const SizedBox(width: 6),
           Flexible(
             child: TextWidget(
@@ -313,62 +474,47 @@ Widget _buildDetailText(String title, String value) {
       text: "$title: $value",
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      maxLines: 3,
+      maxLines: 5,
+      overflow: TextOverflow.ellipsis,
     ),
   );
 }
 
-Widget _buildShareButtons() {
-  return Row(
-    children: [
-      Expanded(
-        child: ElevatedButton.icon(
-          onPressed: () {},
-          icon: Image.asset("assets/whats_app_ico.png", height: 20),
-          label: const Text(
-            "Share via WhatsApp",
-            style: TextStyle(fontWeight: FontWeight.bold), // matches bold
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(
-              0xFF25D366,
-            ).withOpacity(0.18), // light green
-            foregroundColor: const Color(0xFF25D366), // text/icon color
-            elevation: 0, // flat look
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+Widget _buildShare(String icon, String platform, Color color) {
+  return Container(
+    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+    decoration: BoxDecoration(
+      color: color,
+      // WhatsApp dynamic color
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(icon, height: 20),
+        const SizedBox(width: 8),
+        RichText(
+          text: TextSpan(
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
             ),
+            children: [
+              TextSpan(text: "Share via "),
+              TextSpan(
+                text: platform,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ),
-      ),
-      const SizedBox(width: 12),
-      Expanded(
-        child: ElevatedButton.icon(
-          onPressed: () {},
-          icon: Image.asset("assets/linkedin_ico.png", height: 20),
-          label: const Text(
-            "Share on LinkedIn",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(
-              0xFF0077B5,
-            ).withOpacity(0.18), // light blue
-            foregroundColor: const Color(0xFF0077B5),
-            elevation: 0,
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
-Widget _buildBottomBar() {
+Widget _buildBottomBar(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(12),
     decoration: const BoxDecoration(
@@ -397,7 +543,9 @@ Widget _buildBottomBar() {
           children: [
             Expanded(
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppUtils.showSnackBar(context, "Data is not Available");
+                },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Color(0xFFFE4545)),
                   shape: RoundedRectangleBorder(
@@ -405,19 +553,19 @@ Widget _buildBottomBar() {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: const Text(
-                  "Edit",
-                  style: TextStyle(
-                    color: Color(0xFFFE4545),
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: const TextWidget(
+                  text: "Edit",
+                  color: Color(0xFFFE4545),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppUtils.showSnackBar(context, "Data is not Available");
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFFE4545),
                   shape: RoundedRectangleBorder(
@@ -425,12 +573,11 @@ Widget _buildBottomBar() {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: const Text(
-                  "Close",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: const TextWidget(
+                  text: "Close",
+
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -453,22 +600,19 @@ class DetailTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF1F1F1F),
-            ),
+          TextWidget(
+            text: title,
+
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF1F1F1F),
           ),
           const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFFAAAAAA),
-            ),
+          TextWidget(
+            text: value,
+            fontSize: 10,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFFAAAAAA),
           ),
         ],
       ),

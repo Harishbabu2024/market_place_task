@@ -14,45 +14,67 @@ class ListViewModel extends BaseViewModel {
   bool _isSearchLoading = false;
   bool get isSearchLoading => _isSearchLoading;
 
-  void setSearchLoading(bool value) {
-    _isSearchLoading = value;
+ 
+
+  bool isLoading = false;
+  bool _isLoadingMore = false;
+  bool _hasMore = true;
+
+  int _page = 1;
+  void setLoading(bool value) {
+    isLoading = value;
     notifyListeners();
   }
 
-  void setGroupCount(int value) {
-    groupCount = value;
-    notifyListeners();
-  }
+  Future<ListPageModel?> fetchPostList(
+    BuildContext context, {
+    bool loadMore = false,
+  }) async {
+    if (_isLoadingMore || !_hasMore) return null;
 
-  void resetPagination() {
-    _listPageModel = null;
-    notifyListeners();
-  }
+    if (loadMore) {
+      _isLoadingMore = true;
+    } else {
+      _page = 1;
+      _hasMore = true;
+      setLoading(true);
+    }
 
-  void setSearchQuery(String query) {
-    searchQuery = query;
-    resetPagination();
-    notifyListeners();
-  }
-
-  Future<ListPageModel?> fetchCategories(BuildContext context) async {
-    setLoading(true);
-    notifyListeners();
     try {
-      _listPageModel = await apiService.fetchAllList(context, page: 1);
-      debugPrint(
-        "categiry response is ${_listPageModel?.marketplaceRequests?.length}",
+      final response = await apiService.fetchAllList(
+        context,
+        page: _page,
       );
-      setLoading(false);
-      notifyListeners();
+
+      if (response != null && response.marketplaceRequests != null) {
+        if (loadMore && _listPageModel?.marketplaceRequests != null) {
+          _listPageModel?.marketplaceRequests
+              ?.addAll(response.marketplaceRequests!);
+        } else {
+          _listPageModel = response;
+        }
+        final pagination = response.pagination; 
+        if (pagination == null || pagination.count == pagination.totalPages) {
+          _hasMore = false;
+        } else {
+          _page++;
+        }
+      }
 
       return _listPageModel;
     } catch (e, trace) {
-      setLoading(false);
-      debugPrint("Error while fetching categories : $trace");
+      debugPrint("Error while fetching post list: $trace");
       return null;
+    } finally {
+      if (loadMore) {
+        _isLoadingMore = false;
+      } else {
+        setLoading(false);
+      }
+      notifyListeners();
     }
   }
+
 
   Future<SinglePostModel?> fetchSinglePost(
     BuildContext context,

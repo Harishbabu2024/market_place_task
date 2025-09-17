@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market_place_task/utils/font_utils.dart';
 
 class TextWidget extends StatelessWidget {
   final double fontSize;
@@ -24,7 +25,7 @@ class TextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
+      style: FontUtils.FontStyle(
         fontSize: fontSize,
         color: color,
         fontWeight: fontWeight,
